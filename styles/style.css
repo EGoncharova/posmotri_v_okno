@@ -1,4 +1,4 @@
-@import url(../fonts/fonts.css);
+ 
 *,
 *::before,
 *::after {
@@ -24,7 +24,6 @@ html {
 }
 .content{
     width: 1140px;
-    height: 534px;
     display: grid;
     grid-template-columns: 711px 399px;
     gap: 30px;
@@ -59,10 +58,10 @@ ol {
   flex-grow: 1;
   border: none;
 }
-.search-form__checkbox, .search-form__textfield, .search-form__submit-button {
+.search-form__label:has(.search-form__checkbox), .search-form__submit-button {
   cursor: pointer;
 }
-.search-form__submit-button {}
+
 .button {
   padding: 6px 74px;
   text-align: center;
@@ -73,14 +72,13 @@ ol {
   line-height: normal;
   background-color: transparent;
   color: white;
-  border: 1px solid white;
+  /* currentColor берет цвет из свойства color*/
+  border: 1px solid currentColor;
 }
 .more-button {
   width: 100%;
 }
-.search-form__submit-button:hover {
-  background-color: grey;
-}
+
 .search-form__label, .search-form__fieldset-title {
   color: #FFF;
   font-family:'Fira Sans Condensed', sans-serif;
@@ -95,6 +93,7 @@ ol {
 .search-form__label {
   display: flex;
   gap: 4px;
+  align-items: center;
   /* width: fit-content; */
 }
 /* .search-form__label .search-form__textfield  - пробел -> определит стиль второго элемента .search-form__textfield */
@@ -104,13 +103,18 @@ ol {
 }
 .search-form__textfield {
   background-color: transparent;
-  color: rgba(255, 255, 255, 0.70);
+  color: white;
   font-family: 'Fira Sans Condensed', sans-serif;
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  border: none;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  /* элемнт инпут по умолчанию имеет темно-серую обводку со всех сторон - если она не нужна по дизайнуЮ ее надо принудительно отключать
+  если нужен другой цвет обводки, то надо его принудительно установить */
+  border-right: none;
+  border-left: none;
   width: 100%;
 }
 .search-form__textfield:focus{
@@ -125,9 +129,8 @@ ol {
   appearance: none;
 }
 
-.search-form__checkbox:checked{/* :checked - когда кликнули на чек-бокс, и в нем появилась галочка*/
-
-}
+/*.search-form__checkbox:checked{ :checked - когда кликнули на чек-бокс, и в нем появилась галочка
+}*/
 
 /* когда кликнули на чек-бокс, отреагирует его сосед с классом ... - у него появился псевдо-элемент афтер (квадратик)  */
 .search-form__checkbox:checked +.search-form__pseudo-checkbox::after {
@@ -151,7 +154,10 @@ ol {
   border: none;
 }
 .search-form__label:has(.search-form__checkbox:focus-visible)  { /* has <- определит первый элемент */
-  border: 1px solid white;
+  /* outlineв отличие от бордера не отодвигает элементы страницы, не будет скачка */
+  outline: 1px solid white;
+  /* дает отступ от содержимого элемента до линии */
+  outline-offset: 1px;
 }
 
 .result {
@@ -160,13 +166,17 @@ ol {
 .result__video-container {
   width: 711px;
   height: 386px;
-  overflow: hidden;
   margin-bottom: 16px;
   position: relative;
 }
 .result__video {
   width: 100%;
   height: 100%;
+  /* свойство object-fit позволяет вписать элемент с изображением (видео или картинки) в указанные (свои) размеры, 
+  в значении cover растягивает до указанного размера меньшую сторону картинки и скрывает то, что выходит за пределы указанных размерных границ.
+  в значении  contain растягивает до указанного размера большую сторону, т.е. за указанные размерные границы заведомо ничего не выйдет - т.о. может оставаться "пустая дырка"*/
+  object-fit: cover;
+  object-position: bottom;
 }
 .content__details {
   width: 100%;
@@ -174,12 +184,14 @@ ol {
 .content__video-card-thumbnail {
   width: 194px;
   height: 103px;
+  object-fit: cover;
+  object-position: bottom;
 }
 
 
 .title {
   color: white;
-  font-family: Oswald;
+  font-family: Oswald, sans-serif;
   font-size: 75px;
   font-style: normal;
   font-weight: 700;
@@ -193,8 +205,10 @@ ol {
 .content__list {
   width: 100%;
   height: 295px;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  /* overflow-y: scroll;
+  overflow-x: hidden; */
+  /* значение  auto для overflow позволит бьраузеру самому решить, надо ли отображать полосу прокрутки */
+  overflow: auto;
   position: relative;
 }
 
@@ -238,6 +252,9 @@ ol {
 .content__card-link:focus-visible{
   outline: 1px solid white;
 }
+.content__card-link:active {
+  background-color: #545050;
+}
 .content__video-card-title{
   font-family: Oswald, sans-serif;
   font-size: 30px;
@@ -245,6 +262,10 @@ ol {
   font-weight: 700;
   line-height: 100%; /* 30px */
   text-transform: uppercase;
+  max-width: 200px;
+  text-overflow: ellipsis; 
+  white-space: nowrap; 
+  overflow: hidden;
 }
 
 .content__video-card-description{
@@ -253,18 +274,20 @@ ol {
   font-style: normal;
   font-weight: 400;
   line-height: 90%;
+  max-width: 200px;
+  text-overflow: ellipsis; 
+  white-space: nowrap; 
+  overflow: hidden;
 }
-.search-form__label:hover .search-form__label-text {
-  /* цепочку определений читаем с конца: текст, вложенный в тег лейбл, и лейбл находится в сосотоянии ховер, 
+/* цепочку определений читаем с конца: текст, вложенный в тег лейбл, и лейбл находится в сосотоянии ховер, 
   само определение будет относиться к последнему из перечисленных элементов
   т.е. к тексту около чекбокса */
+.search-form__pseudo-checkbox:hover+.search-form__label-text {
   text-decoration: underline;
 }
 .button:focus {
   /* срабатывает по клавиатурному переходу по элементам */
   outline: none;
-  background-color: transparent;
-  text-decoration: none;
 }
 .button:hover {
   /* курсор мыши находится над элементом, ничего не нажато */
@@ -279,4 +302,5 @@ ol {
 .button:focus-visible {
   /* срабатывает по клавиатурному переходу по элементам */
   outline: 1px solid white;
+  outline-offset: 1px;
 }
