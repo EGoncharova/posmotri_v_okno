@@ -25,7 +25,7 @@ html {
 .content{
     width: 1140px;
     display: grid;
-    grid-template-columns: 711px 399px;
+    grid-template-columns: 711px 402px;
     gap: 30px;
 }
 
@@ -58,6 +58,9 @@ ol {
   flex-grow: 1;
   border: none;
 }
+.search-form__fieldset:has(.search-form__textfield) {
+  flex-grow: 1.8;
+}
 .search-form__label:has(.search-form__checkbox), .search-form__submit-button {
   cursor: pointer;
 }
@@ -76,7 +79,9 @@ ol {
   border: 1px solid currentColor;
 }
 .more-button {
-  width: 100%;
+  width: 99%;
+  margin-left: 2px;
+  margin-bottom: 2px;
 }
 
 .search-form__label, .search-form__fieldset-title {
@@ -88,7 +93,7 @@ ol {
   line-height: normal;
 }
 .search-form__fieldset-title {
-  margin-bottom: 9px;
+  margin-bottom: 8px;
 }
 .search-form__label {
   display: flex;
@@ -98,9 +103,8 @@ ol {
 }
 /* .search-form__label .search-form__textfield  - пробел -> определит стиль второго элемента .search-form__textfield */
 .search-form__label:has(.search-form__textfield:focus-visible)  { /* has <- определит первый элемент */
-  border-bottom: 1px solid white;
-  border-top: 1px solid white;
-}
+  outline: 1px solid white;
+ }
 .search-form__textfield {
   background-color: transparent;
   color: white;
@@ -115,6 +119,8 @@ ol {
   если нужен другой цвет обводки, то надо его принудительно установить */
   border-right: none;
   border-left: none;
+  padding:0;
+  margin-bottom: 4px;
   width: 100%;
 }
 .search-form__textfield:focus{
@@ -122,7 +128,8 @@ ol {
 }
 .search-form__checkbox-list {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  margin-bottom: 4px;
 }
 
 .search-form__label-text {
@@ -222,7 +229,6 @@ ol {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  
 }
 .visually-hidden {
   block-size: 1px;
@@ -232,6 +238,7 @@ ol {
   white-space: nowrap;
   margin:0;
   width:0;
+  position: absolute;
 } 
 .content__card-link {
   text-decoration: none;
@@ -262,7 +269,7 @@ ol {
   font-weight: 700;
   line-height: 100%; /* 30px */
   text-transform: uppercase;
-  max-width: 200px;
+  max-width: 186px;
   text-overflow: ellipsis; 
   white-space: nowrap; 
   overflow: hidden;
@@ -274,7 +281,7 @@ ol {
   font-style: normal;
   font-weight: 400;
   line-height: 90%;
-  max-width: 200px;
+  max-width: 186px;
   text-overflow: ellipsis; 
   white-space: nowrap; 
   overflow: hidden;
@@ -282,7 +289,7 @@ ol {
 /* цепочку определений читаем с конца: текст, вложенный в тег лейбл, и лейбл находится в сосотоянии ховер, 
   само определение будет относиться к последнему из перечисленных элементов
   т.е. к тексту около чекбокса */
-.search-form__pseudo-checkbox:hover+.search-form__label-text {
+.search-form__label:hover .search-form__label-text {
   text-decoration: underline;
 }
 .button:focus {
